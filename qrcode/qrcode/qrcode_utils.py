@@ -43,9 +43,13 @@ class QRCodeShellParser(argparse.ArgumentParser):
                     'subp': progparts[2]})
 
 class Shell(object):
+
     def get_base_parser(self):
+        """
+        Get a base parser including some global arguments.
+        """
         parser = QRCodeShellParser(prog = 'qrcode',
-                description='A python tool to encode and decode qrcode',
+                description='A python app for creating and decoding QR Codes',
                 epilog='See "qrcode help COMMAND" for help on a specific comand.',
                 add_help = False
         )
@@ -62,6 +66,9 @@ class Shell(object):
         return parser
 
     def get_subcommand_parse(self):
+        """
+        Auto discover subcommands.
+        """
         parser = self.get_base_parser()
         self.subcommands = {}
         subparsers = parser.add_subparsers(metavar='<subcommand>')
@@ -69,6 +76,9 @@ class Shell(object):
         return parser
 
     def _find_actions(self, subparsers, actions_module):
+        """
+        Find attribute starts with "do_" in a actions module and append to the subcommands.
+        """
         for attr in (a for a in dir(actions_module) if a.startswith('do_')):
             command = attr[3:].replace('_', '-')
             callback = getattr(actions_module, attr)
@@ -93,18 +103,18 @@ class Shell(object):
             dest='data',
             metavar='<data>',
             type=str,
-            help='The data to be inserted into the target qrcode.',
+            help='The data to generate qrcode.',
             default=None,
     )
     @utils.arg('-o','--output',
             dest='output',
             metavar='<output>',
-            help='The output qrcode file.',
+            help='Write qrcode to <file>',
             default=None,
     )
     def do_encode(self, args):
         """
-        Generate a qrcode file which includes spicifed data.
+        Generate qrcode for the given data.
         """
         if args.data is None:
             print("ERROR: option '--data/-d' is required.")
@@ -121,7 +131,7 @@ class Shell(object):
     @utils.arg('-f','--file',
             dest='file',
             metavar='<file>',
-            help='The qrcode file to decode data from.',
+            help='The qrcode to decode.',
             default=None,
     )
     def do_decode(self, args):
