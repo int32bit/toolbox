@@ -9,3 +9,4 @@
 3. [buptLogin](https://github.com/int32bit/buptLogin): 北邮校园网终端认证脚本程序，支持Bash和python两个版本。
 4. [二维码生成和解析工具](./qrcode): 二维码生成和解析工具，使用Docker快速构建。
 5. [Harbor命令行工具](https://github.com/int32bit/harborclient): Harbor命令行工具。
+6. [termjs](https://github.com/int32bit/term.js): 一个非常简单的Web虚拟终端工具。
